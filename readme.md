@@ -1,56 +1,81 @@
-# RPG de Texto em Java (POO)
+# 🎲 RPG de Texto em Java (POO)
 
-Descrição
-- Jogo de RPG em texto desenvolvido em Java com foco na aplicação dos conceitos de Programação Orientada a Objetos.
-- Combates por rolagem de dados, uso de itens em inventário e navegação por uma história simples.
-- Trabalho em dupla. Entrega e demonstração: 28 de outubro de 2025.
+Uma versão limpa e interativa do README para facilitar leitura e uso.
 
-Estrutura principal (resumo)
+## 📌 Descrição
+Jogo de RPG em texto desenvolvido em Java para aplicar conceitos de Programação Orientada a Objetos. Mecânicas principais: combates por rolagem de dados, uso de itens em inventário e navegação em uma história simples.
+
+## 🚀 Como executar
+Opções rápidas (Windows):
+- Importar o projeto em uma IDE Java (Eclipse / IntelliJ) e executar a classe `Jogo`.
+- Via terminal (ex.: JDK instalado):
+  1. Abrir PowerShell ou cmd.
+  2. cd para a pasta do projeto:
+     - cd "c:\Users\Darkz\Desktop\Projetos\ProjetoRPG"
+  3. Compilar / rodar conforme sua estrutura (ou execute pelo IDE).
+
+## ▶️ Como jogar (comandos comuns)
+- Explorar — procurar locais, inimigos e itens.
+- Inventário — listar itens ordenados.
+- Usar [id/nome] — aplicar efeito do item (reduz quantidade).
+- Fugir — rolar dado para tentativa de fuga.
+- Status — ver atributos do personagem.
+- Sair — encerrar o jogo.
+
+Exemplo de interação (console):  
+> 1. Explorar  
+> 2. Usar Poção 1  
+> 3. Fugir
+
+## 🧩 Estrutura principal (resumo)
 - Personagem (abstrata)
   - Atributos: nome, pontosVida, ataque, defesa, nivel, Inventario inventario
   - Subclasses: Guerreiro, Mago, Arqueiro
-  - Inimigo também deriva de Personagem
+  - Inimigo deriva de Personagem
   - Requer: construtor padrão e construtor de cópia
-
 - Item
   - Atributos: nome, descricao, efeito, quantidade
-  - Quantidade decrementa ao usar
-  - equals para detectar itens iguais (somar quantidade)
-  - compareTo para ordenação (por nome ou poder)
-
+  - Usar decrementa quantidade
+  - equals() para detectar igualdade (somar quantidade)
+  - compareTo() para ordenação
 - Inventario
-  - Adicionar item (aumenta quantidade se já existe)
+  - Adicionar item (incrementa quantidade se existir)
   - Remover item (reduz quantidade)
   - Listar itens ordenados
-  - Implementar clone() para copiar itens independentemente
+  - Implementar clone() / construtor de cópia para deep copy
 
-Sistema de combate
-- Método: batalhar(Inimigo inimigo)
-- Mecânica:
-  1. Jogador e inimigo rolam dados a cada turno.
-  2. Valor do dado somado ao atributo ataque.
-  3. Ataque é efetivo se (ataque + dado) > defesa do adversário.
-  4. Combate termina quando pontosVida <= 0 de um dos lados.
+## ⚔️ Sistema de combate
+Método: batalhar(Inimigo inimigo)  
+Mecânica por turno:
+1. Jogador e inimigo rolam dados.
+2. Soma do dado + atributo ataque.
+3. Ataque efetivo se (ataque + dado) > defesa do adversário.
+4. Combate encerra quando pontosVida <= 0 de qualquer lado.
 
-Navegação e jogabilidade
-- Classe Jogo contém loop principal.
-- Ações do jogador incluem:
-  - Explorar (encontrar locais, inimigos, armadilhas)
-  - Usar itens do inventário
-  - Fugir (com chance de falha baseada em rolagem de dados)
-  - Tomar decisões que afetam progressão (caminhos, portas, pegar itens)
+## ✅ Requisitos obrigatórios (a implementar)
+- toString(), equals(), hashCode()
+- clone() e/ou construtor de cópia
+- compareTo() onde aplicável
 
-Requisitos obrigatórios (quando aplicáveis)
-- Implementar, conforme apropriado nas classes:
-  - toString(), equals(), hashCode()
-  - clone(), construtor de cópia
-  - compareTo()
+## 🧪 Testes recomendados
+- Cenários de combate (vários níveis/armas/defesas).
+- Uso de itens e decremento correto de quantidade.
+- Clonagem de inventário sem referências compartilhadas.
+- Ordenação e mesclagem de itens iguais (equals).
 
-Critérios de avaliação
-- Uso correto de POO: 7,0 pts
-- Qualidade do código: 1,5 pts
-- Criatividade e qualidade da história/navegação: 1,5 pts
+## 📝 Critérios de avaliação
+- Uso correto de POO: 7,0 pts  
+- Qualidade do código: 1,5 pts  
+- Criatividade e história/navegação: 1,5 pts
 
-Observações
-- Priorizar código limpo e documentação dos métodos.
-- Testar cenários de combate, uso de itens
+## 💡 Dicas rápidas
+- Priorize código limpo e nomes claros.
+- Documente métodos públicos com javadoc.
+- Escreva testes unitários para batalhas e inventário.
+
+--- 
+Pequena checklist antes da entrega:
+- [ ] Construtores e clones implementados
+- [ ] toString/equals/hashCode testados
+- [ ] Inventário com deep copy
+- [ ] Cenários de combate testados
