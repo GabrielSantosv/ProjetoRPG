@@ -108,3 +108,41 @@ Pequena checklist antes da entrega:
 - [ ] toString/equals/hashCode testados
 - [ ] Inventário com deep copy
 - [ ] Cenários de combate testados
+
+# 🎲 RPG de Texto em Java (POO) — Resumo para Apresentação
+
+Premissa
+- Universo criado pelos Conceitos Primordiais; da união nasceu a Magia Selvagem.
+- Silas (avatar da Morte) traiu e, com Lysander, criou Impetus Morgrim, o Monarca do Lamento,
+  que espalha a praga da Desolação transformando Auroria em Umbreterna.
+
+Objetivo do jogo
+- Você é um herói mundano convocado por Silas.
+- Missão inicial: impedir que a praga alcance o vilarejo de Salgueiral investigando as "Lágrimas de Auroria".
+
+Fluxo do jogo (mecânica)
+- Criação de personagem: escolha entre Guerreiro, Mago ou Arqueiro.
+- Três etapas principais:
+  1. Floresta Sombria — encontro com Goblin.
+  2. Ponte Quebrada — encontro com Orc.
+  3. Portão do Castelo — entrada final e encontro com o chefe.
+- Combates por turno: jogador e inimigo rolam dados; dano = ataque + dado - defesa.
+- Inventário: itens que curam ou aumentam atributos; uso decrementa quantidade.
+- Sessões em memória; progresso salvo por clonagem do personagem entre etapas.
+
+Final secreto (Easter egg) — Margit, o desalmado
+- Condição: jogador escolhe a classe Mago e foge com sucesso de todos os encontros anteriores.
+- Ao satisfazer a condição, uma rota secreta é desbloqueada no final e o jogador enfrenta Margit.
+- Derrotar Margit encerra o jogo com o final secreto.
+
+Notas de implementação e execução
+- Projeto sem banco de dados — estado mantido em memória.
+- Arquivo de arte do final secreto: `Margit.txt` (colocar na pasta de execução ou resources).
+- Para rodar com Maven (recomendado):
+  - mvn clean package
+  - mvn -Dexec.mainClass="Jogo" exec:java
+  - ou: java -jar target\seu-artifact.jar
+
+Checklist técnico
+- Implementados: Personagem, Guerreiro, Mago, Arqueiro, Inimigo, Inventario, Item, TipoEfeito, Jogo.
+- Ajuste necessário: garantir que `Margit.txt` esteja disponível ou usar classpath resource.
