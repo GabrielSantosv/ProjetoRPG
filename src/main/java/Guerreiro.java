@@ -13,7 +13,9 @@ public class Guerreiro extends Personagem {
         Guerreiro retorno = null;
         try {
             retorno = new Guerreiro(this);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao clonar Guerreiro", e);
+        }
         return retorno;
     }
 }

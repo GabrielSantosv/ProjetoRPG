@@ -13,7 +13,9 @@ public class Arqueiro extends Personagem {
         Arqueiro retorno = null;
         try {
             retorno = new Arqueiro(this);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao clonar Arqueiro", e);
+        }
         return retorno;
     }
 }

@@ -12,7 +12,9 @@ public class Inimigo extends Personagem {
         Inimigo retorno = null;
         try {
             retorno = new Inimigo(this);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao clonar Inimigo", e);
+        }
         return retorno;
     }
 }

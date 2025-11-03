@@ -13,7 +13,9 @@ public class Mago extends Personagem {
         Mago retorno = null;
         try {
             retorno = new Mago(this);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao clonar Mago", e);
+        }
         return retorno;
     }
 }
