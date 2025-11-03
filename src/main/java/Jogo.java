@@ -277,11 +277,28 @@ public class Jogo {
             return;
         }
         encontrouMargit = true;
-        System.out.println("\nVocê sentiu um chamado sombrio... a trilha secreta se abre.");
+        // Falas mais cinematográficas para o encontro com Margit
+        System.out.println();
+        System.out.println("────────────────────────────────────────────────────");
+        System.out.println("Uma voz sombria se ergue nas sombras, reverberando até a sua alma...");
+        try { Thread.sleep(800); } catch (InterruptedException ignored) {}
+        System.out.println("\n\"Como ousa... pensar que poderia escapar de mim?\"");
+        try { Thread.sleep(900); } catch (InterruptedException ignored) {}
+        System.out.println("Um vulto se materializa entre névoas negras — uma presença antiga e faminta.");
+        try { Thread.sleep(700); } catch (InterruptedException ignored) {}
+
         // criar Inimigo Margit (valores ajustáveis)
-        Inimigo margit = new Inimigo("Margit, o desalmado", 200, 22, 12, 12);
+        Inimigo margit = new Inimigo("Margit, o Desalmado", 200, 22, 12, 12);
         margit.getInventario().adicionarItem(new Item("Coroa Corrompida", "Troféu do final secreto", 0, 1, null));
-        System.out.println("Margit aparece diante de você. Este é o verdadeiro responsável pela praga.");
+
+        System.out.println();
+        System.out.println("Margit surge à sua frente, seus olhos queimando como carvões acesos.");
+        try { Thread.sleep(800); } catch (InterruptedException ignored) {}
+        System.out.println("Ele fala com desprezo: \"Sempre soube que um mago covarde teria a audácia de voltar...\"");
+        try { Thread.sleep(800); } catch (InterruptedException ignored) {}
+        System.out.println("\n—— Prepare-se. O verdadeiro combate começa agora. ——");
+        System.out.println("────────────────────────────────────────────────────\n");
+
         exibirAsciiArtMargit();
         boolean venceu = batalhar(margit);
         if (venceu) {
