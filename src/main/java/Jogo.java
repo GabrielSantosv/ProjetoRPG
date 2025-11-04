@@ -12,6 +12,7 @@ public class Jogo {
     private boolean jogadorEhMago = false;
     private boolean fugiuDeTodasBatalhas = true;
     private boolean encontrouMargit = false;
+    private int bonusDanoProximoInimigo = 0;
 
     public void iniciar() {
         criarPersonagem();
@@ -37,10 +38,10 @@ public class Jogo {
     }
 
     private void criarPersonagem() {
-        System.out.println("Bem-vindo à Jornada do Herói!");
-        System.out.print("Digite o nome do seu personagem: ");
+        System.out.println("Bem-vindo a Vale-Cinzento, viajante. Antes de cruzar as fronteiras do desconhecido, diga seu nome e escolha seu caminho.");
+        System.out.print("Digite o nome do seu herói: ");
         String nome = scanner.nextLine();
-        System.out.println("Escolha sua classe:\n1. Guerreiro\n2. Mago\n3. Arqueiro");
+        System.out.println("Escolha sua classe:\n1. Guerreiro\n2. Arcanista\n3. Arqueiro");
         int escolha = lerEscolha();
         switch (escolha) {
             case 1:
@@ -65,87 +66,123 @@ public class Jogo {
     }
 
     private boolean etapa1() {
-        System.out.println("\n--- ETAPA 1: A FLORESTA SOMBRIA ---");
-        System.out.println("Você entra na floresta e se depara com uma bifurcação. Um caminho vai para a esquerda, outro para a direita.");
-        System.out.println("1. Virar à esquerda, por um caminho lamacento.");
-        System.out.println("2. Virar à direita, por um atalho entre espinhos.");
+        System.out.println("\n--- ETAPA 1: A Encruzilhada do Suspiro ---");
+        System.out.println("A lua minguante repousa sobre o Caminho do Suspiro, onde a estrada se divide em duas trilhas. O vento sopra dos dois lados — frio e indeciso.");
+        System.out.println("1. Vereda da Névoa (mais segura, porém desgastante)");
+        System.out.println("2. Senda das Ruínas (mais arriscada, porém promissora)");
 
         int escolha = lerEscolha();
 
         if (escolha == 1) {
-            System.out.println("Você escorrega na lama e torce o tornozelo! Você sofre 10 de dano.");
-            jogador.setPontosVida(jogador.getPontosVida() - 10);
+            System.out.println("A névoa lhe abraça com dedos frios. Galhos arranham sua pele, pedras traem seus passos.");
+            if (random.nextBoolean()) { // 50% de chance de os galhos machucarem
+                System.out.println("Você sofre 10 de dano.");
+                jogador.setPontosVida(jogador.getPontosVida() - 10);
+            } else {
+                System.out.println("Você avança com cautela e evita os galhos cortantes.");
+            }
+            System.out.println("\nUm Sapo Gigante acorda com o barulho e salta até você enfurecido!");
+            Inimigo sapo = new Inimigo("Sapo Gigante", 50, 10, 5, 1);
+            sapo.getInventario().adicionarItem(new Item("Língua de Sapo Gigante", "Troféu", 0, 1, null));
+            return batalhar(sapo);
         } else if (escolha == 2) {
-            System.out.println("Seus pertences se enroscam nos espinhos! Você perde um item aleatório.");
-            jogador.getInventario().removerItemAleatorio();
+            System.out.println("Símbolos antigos se acendem ao seu passo. Um puxão invisível remexe seus pertences… e algo some.");
+            if (random.nextBoolean()) { // 50% de chance de perder um item
+                System.out.println("Você perde um item aleatório.");
+                jogador.getInventario().removerItemAleatorio();
+            } else {
+                System.out.println("Você protege seus pertences a tempo e não perde nada.");
+            }
+            System.out.println("\nDas sombras, uma Pantera de Duas Cabeças salta para atacar!");
+            Inimigo pantera = new Inimigo("Pantera de Duas Cabeças", 70, 12, 3, 1);
+            pantera.getInventario().adicionarItem(new Item("Presa Gêmea Obsidiana", "Troféu", 0, 1, null));
+            return batalhar(pantera);
         } else {
-            // Entrada inválida — adota comportamento seguro (esquerda) e informa o jogador
-            System.out.println("Escolha inválida. Você segue pelo caminho da esquerda por precaução.");
-            System.out.println("Você escorrega na lama e torce o tornozelo! Você sofre 10 de dano.");
-            jogador.setPontosVida(jogador.getPontosVida() - 10);
+            // Entrada inválida — segue pela Vereda da Névoa como padrão
+            System.out.println("Você segue pela Vereda da Névoa, pressionado a decidir logo.");
+            System.out.println("A névoa lhe abraça com dedos frios. Galhos arranham sua pele, pedras traem seus passos.");
+            if (random.nextBoolean()) { // 50% de chance de os galhos machucarem
+                System.out.println("Você sofre 10 de dano.");
+                jogador.setPontosVida(jogador.getPontosVida() - 10);
+            } else {
+                System.out.println("Você avança com cautela e evita os galhos cortantes.");
+            }
+            System.out.println("\nUm Sapo Gigante acorda com o barulho e corre até você enfurecido!");
+            Inimigo sapo = new Inimigo("Sapo Gigante", 50, 10, 5, 1);
+            sapo.getInventario().adicionarItem(new Item("Língua de Sapo Gigante", "Troféu", 0, 1, null));
+            return batalhar(sapo);
         }
-
-        System.out.println("\nIndependente do caminho, um Goblin Batedor salta em sua direção!");
-        Inimigo goblin = new Inimigo("Goblin Batedor", 50, 10, 5, 1);
-        goblin.getInventario().adicionarItem(new Item("Adaga Enferrujada de Goblin", "Troféu", 0, 1, null));
-
-        return batalhar(goblin);
+        
     }
 
     private boolean etapa2() {
-        System.out.println("\n--- ETAPA 2: A PONTE QUEBRADA ---");
-        System.out.println("Após a floresta, você chega a uma ponte antiga sobre um abismo.");
-        System.out.println("1. Tentar saltar a parte quebrada.");
-        System.out.println("2. Escalar pela lateral da ponte.");
+        System.out.println("\n--- ETAPA 2: O Campo de Magma Adormecido ---");
+        System.out.println("Após deixar a floresta úmida para trás, o calor começa a crescer. O chão treme sob passos incertos — diante de você, estende-se o Campo de Magma Adormecido, um mar rubro de rochas incandescentes e fendas por onde o fogo respira. O ar vibra com o cheiro de enxofre e cinza.");
+        System.out.println("1. Atravessar rapidamente saltando entre as rochas incandescentes.");
+        System.out.println("2. Descer por um desnível e contornar as fendas.");
 
         int escolha = lerEscolha();
 
         if (escolha == 1) {
-            System.out.println("Você salta, mas cai de mal jeito, sofrendo 15 de dano.");
-            jogador.setPontosVida(jogador.getPontosVida() - 15);
+            boolean saltoBemSucedido = random.nextBoolean(); // 50% de chance
+            if (saltoBemSucedido) {
+                System.out.println("Você toma distância, corre e salta de pedra em pedra. O calor lambe seus pés, e o suor arde nos olhos. Você se sente motivado!");
+                System.out.println("Você ganhou um bônus de +7 de dano contra o próximo inimigo!");
+                bonusDanoProximoInimigo = 7;
+            } else {
+                System.out.println("Você toma distância, corre e salta de pedra em pedra. O calor lambe seus pés, e o suor arde nos olhos. Um deslize, um estalo, e a dor o alcança. Você sofre 15 de dano.");
+                jogador.setPontosVida(jogador.getPontosVida() - 15);
+            }
         } else if (escolha == 2) {
-            System.out.println("Durante a escalada, você encontra uma erva rara! Você ganhou uma Poção de Cura.");
-            jogador.getInventario().adicionarItem(new Item("Elixir de Cura", "Restaura 25 HP.", 25, 1, TipoEfeito.CURA));
+            System.out.println("Com cautela, você se arrasta entre rochas escuras e fumaça. O ar é pesado, mas, entre fendas resfriadas, encontra um brilho esverdeado — uma erva rara nascida do fogo.");
+            jogador.getInventario().adicionarItem(new Item("Erva de Cinza", "Restaura 25 HP.", 25, 1, TipoEfeito.CURA));
         } else {
-            System.out.println("Escolha inválida. Você segue pela lateral da ponte por precaução e encontra uma erva rara.");
-            jogador.getInventario().adicionarItem(new Item("Elixir de Cura", "Restaura 25 HP.", 25, 1, TipoEfeito.CURA));
+            boolean saltoBemSucedido = random.nextBoolean(); // 50% de chance
+            if (saltoBemSucedido) {
+                System.out.println("Você não pensa duas vezes, corre e salta de pedra em pedra. O calor lambe seus pés, e o suor arde nos olhos. Você se sente motivado!");
+                System.out.println("Você ganhou um bônus de +7 de dano contra o próximo inimigo!");
+                bonusDanoProximoInimigo = 7;
+            } else {
+                System.out.println("Você não pensa duas vezes, corre e salta de pedra em pedra. O calor lambe seus pés, e o suor arde nos olhos. Um deslize, um estalo, e a dor o alcança. Você sofre 15 de dano.");
+                jogador.setPontosVida(jogador.getPontosVida() - 15);
+            }
         }
-        System.out.println("\nDo outro lado da ponte, um Orc Guerreiro bloqueia o caminho!");
-        Inimigo orc = new Inimigo("Orc Guerreiro", 80, 15, 10, 3);
-        orc.getInventario().adicionarItem(new Item("Machado Rustico de Orc", "Troféu", 0, 1, null));
+        System.out.println("\nNo caminho oposto, emergindo das chamas, surge Brukkar, o Portador da Corrente — a armadura marcada por fuligem, o mangual incandescente gotejando faíscas. Sua presença faz o calor parecer um sussurro.");
+        System.out.println("Brukkar bate a corrente em brasa no chão. 'Pedágio: sangue ou ossos.'");
+        Inimigo brukkar = new Inimigo("Brukkar, o Portador da Corrente", 80, 15, 10, 3);
+        brukkar.getInventario().adicionarItem(new Item("Corrente Chamuscada", "Troféu", 0, 1, null));
 
-        return batalhar(orc);
+        return batalhar(brukkar);
     }
 
     private boolean etapaFinal() {
-        System.out.println("\n--- ETAPA FINAL: O PORTÃO DO CASTELO ---");
-        System.out.println("Finalmente, você alcança o portão do castelo amaldiçoado.");
+        System.out.println("\n--- ETAPA FINAL: O Portão do Véu Quebrado ---");
+        System.out.println("As torres do Castelo do Véu Quebrado perfuram a neblina. Um portão colossal se ergue, coberto de runas que parecem observar.");
         System.out.println("1. Tentar arrombar o portão principal com força bruta.");
         System.out.println("2. Procurar uma entrada secreta pelos esgotos.");
 
         int escolha = lerEscolha();
 
         if (escolha == 1) {
-            System.out.println("O portão está magicamente selado e repele sua força, causando 20 de dano.");
+            System.out.println("Você investe. As runas piscam e um repuxo invisível o lança para trás. Você sofre 20 de dano.");
             jogador.setPontosVida(jogador.getPontosVida() - 20);
         } else if (escolha == 2) {
-            System.out.println("Nos esgotos, você encontra um Elixir de Força esquecido por outro aventureiro!");
-            jogador.getInventario().adicionarItem(new Item("Elixir de Força", "Aumenta o ataque.", 5, 1, TipoEfeito.AUMENTO_ATAQUE));
+            System.out.println("Por baixo da muralha, uma grade enferrujada cede. O cheiro é terrível, mas você encontra algo numa bolsa encharcada.");
+            jogador.getInventario().adicionarItem(new Item("Frasco de Fôlego", "Aumenta o ataque.", 5, 1, TipoEfeito.AUMENTO_ATAQUE));
         } else {
-            System.out.println("Escolha inválida. Por precaução, você investiga os esgotos e acaba encontrando um Elixir de Força.");
-            jogador.getInventario().adicionarItem(new Item("Elixir de Força", "Aumenta o ataque.", 5, 1, TipoEfeito.AUMENTO_ATAQUE));
+            System.out.println("Escolha inválida. Por precaução, você investiga os esgotos e acaba encontrando algo útil em uma bolsa encharcada.");
+            jogador.getInventario().adicionarItem(new Item("Frasco de Fôlego", "Aumenta o ataque.", 5, 1, TipoEfeito.AUMENTO_ATAQUE));
         }
 
-        // Verifica condição secreta (Margit: jogador deve ser Mago e ter fugido de todas as batalhas)
+        // Verifica condição secreta (Encontro secreto: Arcanista + zero fugas)
         if (verificouFugasCompletas()) {
-            System.out.println("\nUma trilha oculta se revela por sua astúcia... algo pressagia um confronto único.");
-            // encounterMargit agora retorna true se o jogador venceu Margit
-            boolean venceuMargit = encounterMargit();
-            return venceuMargit;
+            boolean venceuMorvek = encounterMorvek();
+            return venceuMorvek;
         } else {
-            System.out.println("\nO barulho atrai o guardião! Um Dragão Chefe emerge das sombras!");
-            Inimigo chefe = new Inimigo("Dragão Chefe", 150, 25, 15, 5);
-            chefe.getInventario().adicionarItem(new Item("Escama de Dragao", "Troféu", 0, 1, null));
+            System.out.println("\nDo além-túmulo, ergue-se Balduran, o Imperador Esqueleto — manto puído sobre ossos entalhados, olhos vazios que ardem em brasa pálida.");
+            System.out.println("Os grilhões no portão se soltam com um lamento antigo. A coroa quebrada tilinta enquanto ele aponta a espada real. 'Nenhum passo profanará meu domínio.'");
+            Inimigo chefe = new Inimigo("Balduran, o Imperador Esqueleto", 150, 25, 15, 5);
+            chefe.getInventario().adicionarItem(new Item("Coroa Estilhaçada", "Troféu", 0, 1, null));
             return batalhar(chefe);
         }
     }
@@ -170,8 +207,8 @@ public class Jogo {
                 case 2:
                     // usando item considera-se engajado (não é fuga)
                     this.fugiuDeTodasBatalhas = false;
-                    jogador.getInventario().listarItens();
-                    System.out.print("Digite o nome do item que deseja usar (ou 'cancelar'): ");
+                    jogador.getInventario().listarItensUsaveis();
+                    System.out.print("Digite o ID ou nome do item que deseja usar (ou 'cancelar'): ");
                     String nomeItem = scanner.nextLine();
                     if (!nomeItem.equalsIgnoreCase("cancelar")) {
                         boolean itemUsadoComSucesso = jogador.getInventario().usarItem(nomeItem, jogador);
@@ -186,8 +223,9 @@ public class Jogo {
                     }
                     break;
                 case 3:
-                    // Verificação para não fugir do chefe
-                    if (inimigo.getNome().equals("Dragão Chefe") || inimigo.getNome().equals("O Maliguininho") || inimigo.getNome().equals("Margit, o desalmado")) {
+                    // Verificação para não fugir dos chefes (Balduran e Mórvek)
+                    if (inimigo.getNome().equals("Balduran, o Imperador Esqueleto") ||
+                        inimigo.getNome().equals("Mórvek, o Arquiteto do Vazio")) {
                         System.out.println("Você não pode fugir de uma batalha de chefe!");
                         // tentar fugir de chefe conta como engajamento
                         this.fugiuDeTodasBatalhas = false;
@@ -199,11 +237,13 @@ public class Jogo {
                         if (sucessoFuga) {
                             System.out.println("Você conseguiu fugir!");
                             // manter fugiuDeTodasBatalhas true (se já true)
+                            if (inimigo.getNome().equals("Brukkar, o Portador da Corrente")) {
+                                bonusDanoProximoInimigo = 0;
+                            }
                             return true; // saiu vivo do combate (considerado sucesso da etapa)
                         } else {
                             System.out.println("A fuga falhou! O inimigo ataca.");
-                            // falha ao fugir => engajamento definitivo e quebra da condição
-                            this.fugiuDeTodasBatalhas = false;
+                            // falha ao fugir não impede final secreto
                             turnoDeCombate(inimigo, jogador);
                         }
                     }
@@ -220,21 +260,50 @@ public class Jogo {
     // Quando este loop termina, tratamos os resultados abaixo (derrota, vitória ou fuga).
         if (!jogador.estaVivo()) {
             System.out.println("\nVocê foi derrotado! Fim de jogo.");
+            if (inimigo.getNome().equals("Balduran, o Imperador Esqueleto")) {
+                System.out.println("As correntes antigas se apertam, e a sombra de Umbreterna cobre de vez estas terras.");
+                System.out.println("Sem sua luz, Vale-Cinzento sucumbe ao lamento do Monarca. Você não conseguiu salvar o território.");
+            }
+            if (inimigo.getNome().equals("Brukkar, o Portador da Corrente")) {
+                bonusDanoProximoInimigo = 0;
+            }
             return false; // Jogador perdeu
         }
 
         // Se o jogador venceu o inimigo (inimigo morreu)
         if (inimigo.estaVivo() == false) {
             System.out.println("\nVocê venceu o combate!");
+            // Mensagens específicas de vitória por inimigo
+            if ("Sapo Gigante".equals(inimigo.getNome())) {
+                System.out.println("O Sapo Gigante solta um último coaxar e tomba pesadamente, deixando a trilha livre.");
+            } else if ("Pantera de Duas Cabeças".equals(inimigo.getNome())) {
+                System.out.println("As duas cabeças da Pantera uivam em uníssono antes de se desfazerem nas sombras, deixando apenas suas presas obsidianas.");
+            } else if ("Brukkar, o Portador da Corrente".equals(inimigo.getNome())) {
+                System.out.println("A corrente flamejante se apaga num estalo. Brukkar encara o céu rubro pela última vez antes de tombar entre brasas que se apagam lentamente.");
+            } else if ("Balduran, o Imperador Esqueleto".equals(inimigo.getNome())) {
+                System.out.println("A coroa partida cai e ecoa no vazio. Balduran desmorona em pó de eras, e o portão solta um último suspiro.");
+                System.out.println();
+                System.out.println("As runas ao redor apagam-se como brasas ao amanhecer. A escuridão que enforcava o reino começa a se desfazer.");
+                System.out.println("Do alto das torres, um vento claro varre a névoa — Vale-Cinzento é libertada do jugo de Umbreterna.");
+                System.out.println("Seu nome ecoará nas encruzilhadas e nas canções: aquele que quebrou a noite.");
+            } else if ("Mórvek, o Arquiteto do Vazio".equals(inimigo.getNome())) {
+                System.out.println("A máscara racha. Um olho antigo observa você com respeito e se desfaz em poeira luminosa. O caminho adiante se revela.");
+            }
             jogador.subirNivel();
             Inventario saque = inimigo.getInventario().clone();
             System.out.println("Você saqueou os itens do inimigo:");
             saque.listarItens();
             jogador.getInventario().adicionarInventario(saque);
+            if (inimigo.getNome().equals("Brukkar, o Portador da Corrente")) {
+                bonusDanoProximoInimigo = 0;
+            }
             return true; // Jogador venceu
         }
 
         // Caso o jogador tenha fugido (já retornamos true), mas se chegou aqui por segurança:
+        if (inimigo.getNome().equals("Brukkar, o Portador da Corrente")) {
+            bonusDanoProximoInimigo = 0;
+        }
         return true;
     }
 
@@ -250,57 +319,54 @@ public class Jogo {
      * Encontra Margit, o desalmado — só chamado se verificouFugasCompletas()
      * for true. Se o jogador derrotar Margit, exibe final secreto.
      */
-    private boolean encounterMargit() {
+    private boolean encounterMorvek() {
         if (encontrouMargit) {
             return false;
         }
         encontrouMargit = true;
-        // Falas mais cinematográficas para o encontro com Margit
         System.out.println();
         System.out.println("────────────────────────────────────────────────────");
-        System.out.println("Uma voz sombria se ergue nas sombras, reverberando até a sua alma...");
+        System.out.println("As runas o reconhecem. O portão se parte em silêncio.");
         try { Thread.sleep(800); } catch (InterruptedException ignored) {}
-        System.out.println("\n\"Como ousa... pensar que poderia escapar de mim?\"");
-        try { Thread.sleep(900); } catch (InterruptedException ignored) {}
-        System.out.println("Um vulto se materializa entre névoas negras — uma presença antiga e faminta.");
+        System.out.println("Surge Mórvek, o Arquiteto do Vazio — manto rasgado, máscara de obsidiana, mãos que deixam rastro de geada no ar.");
         try { Thread.sleep(700); } catch (InterruptedException ignored) {}
 
-        // criar Inimigo Margit (valores ajustáveis)
-        Inimigo margit = new Inimigo("Margit, o Desalmado", 200, 22, 12, 12);
-        margit.getInventario().adicionarItem(new Item("Coroa Corrompida", "Troféu do final secreto", 0, 1, null));
+        Inimigo morvek = new Inimigo("Mórvek, o Arquiteto do Vazio", 200, 22, 12, 12);
+        morvek.getInventario().adicionarItem(new Item("Fragmento de Obsidiana", "Troféu do final secreto", 0, 1, null));
 
         System.out.println();
-        System.out.println("Margit surge à sua frente, seus olhos queimando como carvões acesos.");
-        try { Thread.sleep(800); } catch (InterruptedException ignored) {}
-        System.out.println("Ele fala com desprezo: \"Sempre soube que um mago covarde teria a audácia de voltar...\"");
-        try { Thread.sleep(800); } catch (InterruptedException ignored) {}
-        System.out.println("\n—— Prepare-se. O verdadeiro combate começa agora. ——");
+        System.out.println("Mórvek desliza do escuro: 'Discípulo da centelha, prove que merece atravessar.'");
         System.out.println("────────────────────────────────────────────────────\n");
 
-        exibirAsciiArtMargit();
-        boolean venceu = batalhar(margit);
-        if (venceu) {
-            System.out.println("\nVocê derrotou Margit, o desalmado!");
-            System.out.println("A praga recua. Um final secreto se revela. Parabéns — jogo zerado (Easter Egg).");
+        exibirCenaMorvek();
+        batalhar(morvek);
+        if (!morvek.estaVivo()) {
+            System.out.println("\nVocê derrotou Mórvek.");
+            System.out.println("A máscara racha. Um olho antigo observa você com respeito e se desfaz em poeira luminosa. O caminho adiante se revela.");
             return true;
-        } else {
-            System.out.println("\nVocê não conseguiu derrotar Margit. A praga persiste...");
-            return false;
         }
+
+        // Se chegou aqui e o jogador ainda vive, ou ele fugiu ou perdeu
+        if (jogador.estaVivo()) {
+            System.out.println("\nVocê fugiu de Mórvek. O Véu permanece fechado...");
+        } else {
+            System.out.println("\nVocê não conseguiu derrotar Mórvek. O Véu permanece fechado...");
+        }
+        return false;
     }
 
     /**
      * Exibe uma cena atmosférica para o encontro com Margit sem depender de
      * arquivos externos. Mantém a voz e pequenas pausas.
      */
-    private void exibirAsciiArtMargit() {
-        System.out.println("\n\n...O ar escurece... Uma presença terrível se aproxima...\n\n");
+    private void exibirCenaMorvek() {
+        System.out.println("\n\n...O ar esfria... Um silêncio denso toma o corredor...\n\n");
         try { Thread.sleep(600); } catch (InterruptedException ignored) {}
-        System.out.println("Um vento gélido atravessa o salão — as sombras se contorcem.");
+        System.out.println("O gelo racha ao toque do vazio; as runas cintilam e se calam.");
         try { Thread.sleep(500); } catch (InterruptedException ignored) {}
-        System.out.println("As tochas tremeluzem; algo antigo observa você nas trevas...");
+        System.out.println("Sombras se dobram ao redor de uma figura — a máscara de obsidiana observa, imóvel.");
         try { Thread.sleep(500); } catch (InterruptedException ignored) {}
-        System.out.println("\nVOZ: 'Chegou a hora... você finalmente me encontrou.'\n");
+        System.out.println("\nUMA VOZ VELADA: 'Além do véu, apenas os dignos.'\n");
     }
 
     private int lerEscolha() {
@@ -319,6 +385,10 @@ public class Jogo {
         int forcaAtaque = atacante.getAtaque() + rolagemDado;
         System.out.println("\n" + atacante.getNome() + " ataca (Força: " + atacante.getAtaque() + " + Dado: " + rolagemDado + " = " + forcaAtaque + ")");
         int dano = forcaAtaque - defensor.getDefesa();
+        if (atacante == jogador && "Brukkar, o Portador da Corrente".equals(defensor.getNome()) && bonusDanoProximoInimigo > 0) {
+            dano += bonusDanoProximoInimigo;
+            System.out.println("(Bônus de +" + bonusDanoProximoInimigo + " aplicado contra a Armadura)");
+        }
         if (dano > 0) {
             defensor.setPontosVida(defensor.getPontosVida() - dano);
             System.out.println(atacante.getNome() + " causou " + dano + " de dano em " + defensor.getNome() + "!");

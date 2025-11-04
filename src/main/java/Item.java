@@ -1,6 +1,7 @@
 
 public class Item implements Comparable<Item>, Cloneable {
 
+    private String id;
     private String nome;
     private String descricao;
     private int efeito; // valor numérico do efeito (ex: cura 25, ataque +5)
@@ -8,6 +9,16 @@ public class Item implements Comparable<Item>, Cloneable {
     private TipoEfeito tipoEfeito;
 
     public Item(String nome, String descricao, int efeito, int quantidade, TipoEfeito tipoEfeito) {
+        this.nome = nome == null ? "" : nome;
+        this.id = StringNormalizer.gerarId(this.nome);
+        this.descricao = descricao == null ? "" : descricao;
+        this.efeito = efeito;
+        this.quantidade = Math.max(0, quantidade);
+        this.tipoEfeito = tipoEfeito;
+    }
+    
+    public Item(String id, String nome, String descricao, int efeito, int quantidade, TipoEfeito tipoEfeito) {
+        this.id = id == null || id.isEmpty() ? StringNormalizer.gerarId(nome) : id;
         this.nome = nome == null ? "" : nome;
         this.descricao = descricao == null ? "" : descricao;
         this.efeito = efeito;
@@ -17,18 +28,24 @@ public class Item implements Comparable<Item>, Cloneable {
 
     public Item(Item outro) {
         if (outro == null) {
+            this.id = "";
             this.nome = "";
             this.descricao = "";
             this.efeito = 0;
             this.quantidade = 0;
             this.tipoEfeito = null;
         } else {
+            this.id = outro.id;
             this.nome = outro.nome;
             this.descricao = outro.descricao;
             this.efeito = outro.efeito;
             this.quantidade = outro.quantidade;
             this.tipoEfeito = outro.tipoEfeito;
         }
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getNome() {
@@ -60,6 +77,12 @@ public class Item implements Comparable<Item>, Cloneable {
         String q = quantidade > 1 ? " x" + quantidade : "";
         String tipo = tipoEfeito == null ? "" : " [" + tipoEfeito.name() + "]";
         return nome + q + tipo + " - " + descricao;
+    }
+    
+    public String toStringComId() {
+        String q = quantidade > 1 ? " x" + quantidade : "";
+        String tipo = tipoEfeito == null ? "" : " [" + tipoEfeito.name() + "]";
+        return "[" + id + "] " + nome + q + tipo + " - " + descricao;
     }
 
     @Override

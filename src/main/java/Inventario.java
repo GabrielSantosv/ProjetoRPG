@@ -29,17 +29,21 @@ public class Inventario implements Cloneable {
     }
 
 
-    public boolean usarItem(String nomeItem, Personagem alvo) {
+    public boolean usarItem(String nomeOuId, Personagem alvo) {
         Item itemParaUsar = null;
+        
+        // Tenta encontrar por ID ou nome normalizado
         for (Item item : this.itens) {
-            if (item.getNome().equalsIgnoreCase(nomeItem)) {
+            if (item.getId().equals(nomeOuId) || 
+                item.getId().equals(StringNormalizer.gerarId(nomeOuId)) ||
+                StringNormalizer.equalsNormalizado(item.getNome(), nomeOuId)) {
                 itemParaUsar = item;
                 break;
             }
         }
 
         if (itemParaUsar == null) {
-            System.out.println("Item '" + nomeItem + "' não encontrado.");
+            System.out.println("Item '" + nomeOuId + "' não encontrado.");
             return false; 
         }
 
@@ -105,6 +109,27 @@ public class Inventario implements Cloneable {
             System.out.println(item);
         }
         System.out.println("------------------");
+    }
+    
+    public void listarItensUsaveis() {
+        List<Item> usaveis = new ArrayList<>();
+        for (Item item : itens) {
+            if (item.getTipoEfeito() != null && item.getQuantidade() > 0) {
+                usaveis.add(item);
+            }
+        }
+        
+        if (usaveis.isEmpty()) {
+            System.out.println("Nenhum item usável disponível.");
+            return;
+        }
+        
+        Collections.sort(usaveis);
+        System.out.println("--- Itens Usáveis ---");
+        for (Item item : usaveis) {
+            System.out.println(item.toStringComId());
+        }
+        System.out.println("---------------------");
     }
 
     @Override
