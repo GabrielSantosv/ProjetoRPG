@@ -1,7 +1,5 @@
 // ...existing code...
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,8 +9,6 @@ public class Jogo {
     private Scanner scanner = new Scanner(System.in, "UTF-8");
     private Random random = new Random();
 
-    // Rastreador do Easter Egg / Margit
-    private String easterEggTracker = "";
     private boolean jogadorEhMago = false;
     private boolean fugiuDeTodasBatalhas = true;
     private boolean encontrouMargit = false;
@@ -23,16 +19,12 @@ public class Jogo {
         System.out.println(jogador);
         jogador.getInventario().listarItens();
 
-        Personagem savePoint = (Personagem) jogador.clone();
-
-        System.out.println("\n>>> Ponto de sauvegarde inicial criado! <<<");
+    System.out.println("\n>>> Ponto de sauvegarde inicial criado! <<<");
 
         if (etapa1()) {
-            savePoint = (Personagem) jogador.clone();
             System.out.println("\n>>> Jogo salvo! Progresso da Etapa 1 registrado. <<<");
 
             if (etapa2()) {
-                savePoint = (Personagem) jogador.clone();
                 System.out.println("\n>>> Jogo salvo! Progresso da Etapa 2 registrado. <<<");
 
                 if (etapaFinal()) {
@@ -80,20 +72,19 @@ public class Jogo {
 
         int escolha = lerEscolha();
 
-        if (escolha == 6) {
-            this.easterEggTracker = "6";
-            escolha = 1;
-        } else {
-            this.easterEggTracker = "";
-        }
-
         if (escolha == 1) {
             System.out.println("Você escorrega na lama e torce o tornozelo! Você sofre 10 de dano.");
             jogador.setPontosVida(jogador.getPontosVida() - 10);
-        } else {
+        } else if (escolha == 2) {
             System.out.println("Seus pertences se enroscam nos espinhos! Você perde um item aleatório.");
             jogador.getInventario().removerItemAleatorio();
+        } else {
+            // Entrada inválida — adota comportamento seguro (esquerda) e informa o jogador
+            System.out.println("Escolha inválida. Você segue pelo caminho da esquerda por precaução.");
+            System.out.println("Você escorrega na lama e torce o tornozelo! Você sofre 10 de dano.");
+            jogador.setPontosVida(jogador.getPontosVida() - 10);
         }
+
         System.out.println("\nIndependente do caminho, um Goblin Batedor salta em sua direção!");
         Inimigo goblin = new Inimigo("Goblin Batedor", 50, 10, 5, 1);
         goblin.getInventario().adicionarItem(new Item("Adaga Enferrujada de Goblin", "Troféu", 0, 1, null));
@@ -109,22 +100,14 @@ public class Jogo {
 
         int escolha = lerEscolha();
 
-        if (escolha == 6) {
-            if (this.easterEggTracker.equals("6")) {
-                this.easterEggTracker = "66";
-            } else {
-                this.easterEggTracker = "6";
-            }
-            escolha = 1;
-        } else {
-            this.easterEggTracker = "";
-        }
-
         if (escolha == 1) {
             System.out.println("Você salta, mas cai de mal jeito, sofrendo 15 de dano.");
             jogador.setPontosVida(jogador.getPontosVida() - 15);
-        } else {
+        } else if (escolha == 2) {
             System.out.println("Durante a escalada, você encontra uma erva rara! Você ganhou uma Poção de Cura.");
+            jogador.getInventario().adicionarItem(new Item("Elixir de Cura", "Restaura 25 HP.", 25, 1, TipoEfeito.CURA));
+        } else {
+            System.out.println("Escolha inválida. Você segue pela lateral da ponte por precaução e encontra uma erva rara.");
             jogador.getInventario().adicionarItem(new Item("Elixir de Cura", "Restaura 25 HP.", 25, 1, TipoEfeito.CURA));
         }
         System.out.println("\nDo outro lado da ponte, um Orc Guerreiro bloqueia o caminho!");
@@ -145,17 +128,20 @@ public class Jogo {
         if (escolha == 1) {
             System.out.println("O portão está magicamente selado e repele sua força, causando 20 de dano.");
             jogador.setPontosVida(jogador.getPontosVida() - 20);
-        } else {
+        } else if (escolha == 2) {
             System.out.println("Nos esgotos, você encontra um Elixir de Força esquecido por outro aventureiro!");
+            jogador.getInventario().adicionarItem(new Item("Elixir de Força", "Aumenta o ataque.", 5, 1, TipoEfeito.AUMENTO_ATAQUE));
+        } else {
+            System.out.println("Escolha inválida. Por precaução, você investiga os esgotos e acaba encontrando um Elixir de Força.");
             jogador.getInventario().adicionarItem(new Item("Elixir de Força", "Aumenta o ataque.", 5, 1, TipoEfeito.AUMENTO_ATAQUE));
         }
 
         // Verifica condição secreta (Margit: jogador deve ser Mago e ter fugido de todas as batalhas)
         if (verificouFugasCompletas()) {
             System.out.println("\nUma trilha oculta se revela por sua astúcia... algo pressagia um confronto único.");
-            encounterMargit();
-            // encounterMargit pode encerrar o jogo via System.exit(0)
-            return true;
+            // encounterMargit agora retorna true se o jogador venceu Margit
+            boolean venceuMargit = encounterMargit();
+            return venceuMargit;
         } else {
             System.out.println("\nO barulho atrai o guardião! Um Dragão Chefe emerge das sombras!");
             Inimigo chefe = new Inimigo("Dragão Chefe", 150, 25, 15, 5);
@@ -166,8 +152,6 @@ public class Jogo {
 
     private boolean batalhar(Inimigo inimigo) {
         System.out.println("\n--- COMBATE INICIADO: " + jogador.getNome() + " vs " + inimigo.getNome() + " ---");
-        // marca inicial: assumimos que, até prova em contrário, este encontro não foi fugido
-        boolean battleWasFled = false;
 
         while (jogador.estaVivo() && inimigo.estaVivo()) {
             System.out.println("\n" + jogador);
@@ -176,8 +160,7 @@ public class Jogo {
             int acao = lerEscolha();
             switch (acao) {
                 case 1:
-                    // jogador engajou em combate => quebra possibilidade do easter egg
-                    battleWasFled = false;
+                    // jogador engajou em combate — marca como combate ativo
                     this.fugiuDeTodasBatalhas = false;
                     turnoDeCombate(jogador, inimigo);
                     if (inimigo.estaVivo()) {
@@ -186,7 +169,6 @@ public class Jogo {
                     break;
                 case 2:
                     // usando item considera-se engajado (não é fuga)
-                    battleWasFled = false;
                     this.fugiuDeTodasBatalhas = false;
                     jogador.getInventario().listarItens();
                     System.out.print("Digite o nome do item que deseja usar (ou 'cancelar'): ");
@@ -208,7 +190,6 @@ public class Jogo {
                     if (inimigo.getNome().equals("Dragão Chefe") || inimigo.getNome().equals("O Maliguininho") || inimigo.getNome().equals("Margit, o desalmado")) {
                         System.out.println("Você não pode fugir de uma batalha de chefe!");
                         // tentar fugir de chefe conta como engajamento
-                        battleWasFled = false;
                         this.fugiuDeTodasBatalhas = false;
                         turnoDeCombate(inimigo, jogador);
                     } else {
@@ -217,13 +198,11 @@ public class Jogo {
                         boolean sucessoFuga = random.nextBoolean();
                         if (sucessoFuga) {
                             System.out.println("Você conseguiu fugir!");
-                            battleWasFled = true;
                             // manter fugiuDeTodasBatalhas true (se já true)
                             return true; // saiu vivo do combate (considerado sucesso da etapa)
                         } else {
                             System.out.println("A fuga falhou! O inimigo ataca.");
                             // falha ao fugir => engajamento definitivo e quebra da condição
-                            battleWasFled = false;
                             this.fugiuDeTodasBatalhas = false;
                             turnoDeCombate(inimigo, jogador);
                         }
@@ -231,15 +210,14 @@ public class Jogo {
                     break;
                 default:
                     System.out.println("Ação inválida. Você perdeu o turno.");
-                    battleWasFled = false;
+                    // ação inválida — considerado engajamento
                     this.fugiuDeTodasBatalhas = false;
                     turnoDeCombate(inimigo, jogador);
                     break;
             }
         }
 
-        // Se o loop terminou sem que o jogador tivesse sido derrotado e battleWasFled == true,
-        // significa que o jogador fugiu e a batalha não foi realmente considerada vencida.
+    // Quando este loop termina, tratamos os resultados abaixo (derrota, vitória ou fuga).
         if (!jogador.estaVivo()) {
             System.out.println("\nVocê foi derrotado! Fim de jogo.");
             return false; // Jogador perdeu
@@ -272,9 +250,9 @@ public class Jogo {
      * Encontra Margit, o desalmado — só chamado se verificouFugasCompletas()
      * for true. Se o jogador derrotar Margit, exibe final secreto.
      */
-    private void encounterMargit() {
+    private boolean encounterMargit() {
         if (encontrouMargit) {
-            return;
+            return false;
         }
         encontrouMargit = true;
         // Falas mais cinematográficas para o encontro com Margit
@@ -304,10 +282,25 @@ public class Jogo {
         if (venceu) {
             System.out.println("\nVocê derrotou Margit, o desalmado!");
             System.out.println("A praga recua. Um final secreto se revela. Parabéns — jogo zerado (Easter Egg).");
-            System.exit(0);
+            return true;
         } else {
             System.out.println("\nVocê não conseguiu derrotar Margit. A praga persiste...");
+            return false;
         }
+    }
+
+    /**
+     * Exibe uma cena atmosférica para o encontro com Margit sem depender de
+     * arquivos externos. Mantém a voz e pequenas pausas.
+     */
+    private void exibirAsciiArtMargit() {
+        System.out.println("\n\n...O ar escurece... Uma presença terrível se aproxima...\n\n");
+        try { Thread.sleep(600); } catch (InterruptedException ignored) {}
+        System.out.println("Um vento gélido atravessa o salão — as sombras se contorcem.");
+        try { Thread.sleep(500); } catch (InterruptedException ignored) {}
+        System.out.println("As tochas tremeluzem; algo antigo observa você nas trevas...");
+        try { Thread.sleep(500); } catch (InterruptedException ignored) {}
+        System.out.println("\nVOZ: 'Chegou a hora... você finalmente me encontrou.'\n");
     }
 
     private int lerEscolha() {
@@ -333,28 +326,9 @@ public class Jogo {
             System.out.println(defensor.getNome() + " defendeu completamente o ataque!");
         }
     }
-
-    /**
-     * Exibe a arte ASCII do Margit lendo o arquivo Margit.txt (resources raiz
-     * ou pasta do projeto).
-     */
-    private void exibirAsciiArtMargit() {
-        System.out.println("\n\n...O ar escurece... Uma presença terrível se aproxima...\n\n");
-        // Tenta ler o arquivo TXT
-        try (Scanner leitorArquivo = new Scanner(new File("Margit.txt"), "UTF-8")) {
-            while (leitorArquivo.hasNextLine()) {
-                System.out.println(leitorArquivo.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("!!! ARTE DE MARGIT NÃO ENCONTRADA: Margit.txt não disponível. !!!");
-            System.err.println("!!! Coloque Margit.txt na pasta raiz do projeto para exibir a arte. !!!");
-        }
-        System.out.println("\nVOZ: 'Chegou a hora... você finalmente me encontrou.'\n");
-    }
-
+    
     public static void main(String[] args) {
-        Jogo meuJogo = new Jogo();
-        meuJogo.iniciar();
+        Jogo jogo = new Jogo();
+        jogo.iniciar();
     }
 }
-// ...existing code...
