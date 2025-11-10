@@ -1,0 +1,44 @@
+
+                    RELATÓRIO DO PROJETO RPG - VALE-CINZENTO
+
+
+O projeto foi organizado em classes como:
+
+Ex de HIERARQUIA DE HERANÇA aplicada:
+   - Personagem (abstrata) -->  Guerreiro, Mago, Arqueiro, Inimigo
+   - Classe base define atributos comuns (nome, HP, ataque, defesa, nível)
+   - Subclasses especializam com stats e itens iniciais específicos
+
+Ex de CLASSES AUXILIARES aplicada:
+   - Item: Representa itens colecionáveis (poções, troféus, buffs)
+   - Inventario: Gerencia coleção de itens com sistema de acúmulo de itens.
+   - TipoEfeito: Enum para categorizar efeitos (CURA, AUMENTO_ATAQUE, etc)
+
+
+
+
+Métodos utilizados
+
+- toString(): Representação legível de objetos
+- equals(): Comparação por valores 
+- hashCode(): Geração de hash para coleções
+- clone(): Deep copy evitando compartilhamento de referências
+- compareTo(): Ordenação alfabética do inventário
+
+Sucessos:
+ Aplicação completa de conceitos de POO
+ Sistema de combate funcional com aleatoriedade (d6)
+ Narrativa interativa com 3 etapas + final secreto
+ Sistema de inventário com agrupamento de itens
+
+O resultado é um jogo funcional. Buscamos implementar algumas variaveis que diferenciem a jogabilidade mesmo tentando
+traçar caminhos similares, para dar um sinal de acaso durante a jornada. Variação de inimigos e o sistema de combate funcionam de
+forma fluida, além de uma breve narração dos eventos para desenvolver a história. Também há um final secreto para adicionar um conteúdo
+criativo no final do jogo.
+
+Nota do grupo: 8,5
+
+Ainda assim acreditamos que ainda é possível incrementar outras escolhas que diferenciariam mais a jogabilidade, como utilizar o
+inventário fora de batalhas, atributos mais divergentes de classes e uma narração mais aprimorada, porém optamos por permanecer no que
+acreditamos ser a base principal do projeto.
+

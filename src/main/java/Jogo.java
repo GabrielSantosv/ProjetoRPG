@@ -41,7 +41,7 @@ public class Jogo {
         System.out.println("Bem-vindo a Vale-Cinzento, viajante. Antes de cruzar as fronteiras do desconhecido, diga seu nome e escolha seu caminho.");
         System.out.print("Digite o nome do seu herói: ");
         String nome = scanner.nextLine();
-        System.out.println("Escolha sua classe:\n1. Guerreiro\n2. Arcanista\n3. Arqueiro");
+        System.out.println("Escolha sua classe:\n1. Guerreiro\n2. Mago\n3. Arqueiro");
         int escolha = lerEscolha();
         switch (escolha) {
             case 1:
