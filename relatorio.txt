@@ -1,74 +1,49 @@
+RELATÓRIO DO PROJETO RPG – VALE-CINZENTO
+Estrutura de Classes
+O projeto foi desenvolvido com base em uma hierarquia de herança bem definida.
+A classe abstrata Personagem concentra os atributos e comportamentos comuns (nome, HP, ataque, defesa e nível), servindo como base para as subclasses Guerreiro, Mago, Arqueiro e Inimigo, que especializam esses elementos conforme suas funções no jogo.
+Além das classes principais, foram utilizadas classes auxiliares para organização e suporte do sistema:
+– Item: representa objetos colecionáveis como poções, troféus e itens com efeitos especiais.
+– Inventario: gerencia os itens acumulados, controlando adições, remoções e quantidades.
+– TipoEfeito (enum): classifica os tipos de efeitos disponíveis, como cura e aumento de atributos.
+Recursos e Métodos Implementados
+Foram aplicados métodos-chave da linguagem Java para garantir uma experiência funcional e coesa:
+– toString(): fornece uma descrição legível dos objetos.
+– equals() e hashCode(): permitem comparar itens e utilizá-los corretamente em coleções.
+– clone(): realiza cópias profundas, evitando o compartilhamento de referências.
+– compareTo(): utilizado para ordenar o inventário de forma alfabética.
+O resultado final é um jogo funcional, com variações sutis de jogabilidade que tornam cada jornada única. O sistema de combate e progressão foi desenvolvido para ser fluido, com elementos de acaso que influenciam o desenrolar das batalhas. A narrativa do Vale-Cinzento adiciona imersão à experiência, incluindo um final secreto que premia jogadores atentos às decisões tomadas.
 
-                    RELATÓRIO DO PROJETO RPG - VALE-CINZENTO
+Equipe e Atribuições (28/10 – 04/11)
+Alunos
+– Gabriel dos Santos — RA: 24013743
+– Ítalo de Souza — RA: 2400742
+– Octávio Nascimento — RA: 24015129
+Gabriel dos Santos — RA: 24013743
+– Desenvolvimento do arquivo Jogo.java, definindo o fluxo principal do jogo e pontos de integração.
+– Implementação do método turnoDeCombate(), responsável pela rolagem do dado (d6) e cálculo de dano:
+(DANO = (Ataque + d6) – Defesa).
+– Estruturação das etapas narrativas e progressão da história.
+– Criação de scripts e documentação de execução no repositório (README e instruções).
+– Responsável pela integração e merges finais entre os módulos.
+Ítalo de Souza — RA: 2400742
+– Criação do arquivo Item.java, incluindo os métodos equals(), hashCode(), compareTo() e clone().
+– Desenvolvimento do sistema de empilhamento de itens em Inventario.java, com métodos de adicionar, usar e remover.
+– Implementação da aplicação de efeitos do TipoEfeito (cura, aumento de ataque e defesa).
+– Construção de cópias profundas para Item e Inventario, evitando o compartilhamento de referências.
+– Responsável por ajustes visuais e mensagens exibidas ao jogador, além da documentação técnica e organização dos arquivos.
+Octávio Nascimento — RA: 24015129
+– Implementação da classe abstrata Personagem, definindo atributos, métodos e contratos de clonagem.
+– Criação das subclasses Guerreiro, Mago, Arqueiro e Inimigo, com estatísticas e comportamentos específicos.
+– Desenvolvimento da lógica de controle de combate e das opções do jogador.
+– Revisão e padronização de métodos como equals(), hashCode() e toString() para melhor legibilidade.
+– Responsável pela formatação final do relatório e revisão da documentação.
+Arquivos Complementares
+– StringNormalizer.java (geração de IDs) — Gabriel
+– TipoEfeito.java (enum de efeitos) — Ítalo
+– Documentação e resumo técnico (README e guias de estudo) — Ítalo e Octávio
 
-
-Exemplo de classes principais utilizadas no projeto:
-
-Ex de HIERARQUIA DE HERANÇA aplicada:
-   - Personagem (abstrata) -->  Guerreiro, Mago, Arqueiro, Inimigo
-   - Classe base define atributos comuns (nome, HP, ataque, defesa, nível)
-   - Subclasses especializam com stats e itens iniciais específicos
-
-Ex de CLASSES AUXILIARES aplicada:
-   - Item: Representa itens colecionáveis (poções, troféus, buffs)
-   - Inventario: Gerencia coleção de itens com sistema de acúmulo de itens.
-   - TipoEfeito: Enum para categorizar efeitos (CURA, AUMENTO_ATAQUE, etc)
-
-
-
-Modos utilizados
-
-- toString(): Representação legível de objetos
-- equals(): Comparação por valores 
-- hashCode(): Geração de hash para coleções
-- clone(): Deep copy evitando compartilhamento de referências
-- compareTo(): Ordenação alfabética do inventário
-
-Sucessos alcançados:
- Aplicação completa de conceitos de POO
- Sistema de combate funcional com aleatoriedade (d6)
- Narrativa interativa com 3 etapas + final secreto
- Sistema de inventário com agrupamento de itens
-
-O resultado é um jogo funcional. Buscamos implementar algumas variáveis que diferenciem a jogabilidade mesmo tentando
-traçar caminhos similares, para dar um sinal de acaso durante a jornada. Variação de inimigos e o sistema de combate funcionam de
-forma fluida, além de uma breve narração dos eventos para desenvolver a história. Também há um final secreto para adicionar um conteúdo
-criativo no final do jogo.
-
-EQUIPE E RESPONSABILIDADES
---------------------------------
-
-Alunos: Gabriel dos Santos RA: 24013743, Ítalo de Souza RA:2400742 e Octávio Nascimento RA : 24015129
-
---------------------------------
-
-Divisão de funcionalidades:
-
-- Gabriel — Responsável pela arquitetura de classes e herança: criação de `Personagem` (abstrata) e subclasses (`Guerreiro`, `Mago`,
-   `Arqueiro`, `Inimigo`), implementação de `equals()`, `hashCode()` e `toString()` em `Personagem`, além de testes de integração
-   e validação de entradas do usuário no arquivo jogo.java e realização de StringNormalizer.java 
-
-  Ítalo — Responsável pelo sistema de inventário e itens: classes `Item` e `Inventario`, sistema de empilhamento (stacking),
-   implementação de `usarItem()`, ordenação via `Comparable<Item>` e clonagem profunda para save points.
-
-  Octávio — Responsável pela implementação do sistema de combate e fluxo de jogo em `Jogo.java`: método `turnoDeCombate()`,
-   cálculo de dano (Ataque + d6 - Defesa), mecânica de fuga, lógica de progressão por etapas e integração das narrativas.
-
-
-Maiores dificuldades encontradas (por integrante):
-
-   Gabriel: ajustar o balanceamento entre classes sem tornar o jogo trivial ou impossível; integrar bônus contextuais sem
-   desestabilizar combates.
-   Ítalo: implementar clonagem profunda do inventário e itens.
-   Octávio: depurar lógica de fluxo de combate e tratar corretamente entradas inválidas do jogador para evitar estados inconsistentes.
-
-   Todos colaboramos para a criação de histórias e ideias, discutidas em conjunto. Acreditamos que pela colaboração em conjunta do grupo
-não conseguimos identificar que alguém mereça mais nota do que outro, uma vez que todos executaram suas funções com êxito.
-
-Ainda assim acreditamos que ainda é possível incrementar outras escolhas que diferenciariam mais a jogabilidade, como utilizar o
-inventário fora de batalhas, atributos mais divergentes de classes e uma narração mais aprimorada, porém optamos por permanecer no que
-acreditamos ser a base principal do projeto. Apesar de não achar que construímos um projeto simplista, a visão clara de avanços que
-poderiam ser integrados ao projeto nos faz acreditar que podem existir outros projetos que possam merecer sim nota superior a nossa.
-
-Nota do grupo: 9,0
-
+Considerações Finais
+Acreditamos que nenhum integrante tenha se destacado mais que outros do grupo, portanto atribuímos a mesma nota a todos, 9,5 pelo projeto.
+Junto do ótimo desempenho, somos capaz de identificar diversas melhorias para versões futuras: permitir o uso do inventário fora das batalhas, ampliar as diferenças entre classes e aprimorar a narração para dar mais profundidade à história.
+Acreditamos que o trabalho entregou uma base sólida, equilibrando jogabilidade, narrativa e estrutura técnica, e que as futuras iterações podem transformar o Vale-Cinzento em uma experiência ainda mais completa, por isso acreditamos que ainda é possível entregar mais neste projeto, mesmo que tenhamos realizado os pedidos do projeto.

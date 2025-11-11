@@ -1,0 +1,26 @@
+28/10
+Nos reunimos no fim da tarde com um café e um quadro branco improvisado. Decidimos o escopo e combinamos quem faria o quê. Gabriel trouxe a ideia do sistema de combate — algo simples, com um d6 para dar tensão — enquanto Ítalo pensou no inventário empilhável e Octávio rascunhou o diagrama de classes. Saímos confiantes e com tarefas claras.
+
+29/10
+Começamos a transformar os rascunhos em código. Octávio criou a base de `Personagem` e as subclasses; Ítalo iniciou `Item` e os métodos do inventário; eu (Gabriel) esbocei o fluxo em `Jogo.java` para termos pontos de integração. Pequenos ajustes já apareceram, foi um dia de encaixar peças.
+
+30/10
+Ítalo dedicou-se ao comportamento dos itens: igualdade, ordenação e clonagem. Testei no jogo o uso de itens e integrei chamadas ao fluxo de batalha. Encontramos um caso em que duas instâncias do mesmo item apareciam duplicadas—resolvemos com empilhamento.
+
+31/10
+Dia de combate. Implementei os turnos, a rolagem do dado e a aplicação do dano; Octávio tratou entradas do usuário no loop de combate; Ítalo testou usar itens em batalhas. Surgiram situações de fuga e restrições de chefes que exigiram pequenas alterações no loop principal.
+
+01/11
+Foco em salvamentos e clonagem profunda. Ítalo finalizou o construtor de cópia para `Inventario` e `Item`; testamos restaurações de estado em vários cenários. Esse fluxo mostrou-se sensível: se a clonagem falha, o inventário do save e do jogador se misturam — corrigido.
+
+02/11
+Integração e revisão. Resolvi conflitos simples do repositório, executei merges e validei que os módulos (combate, inventário, inimigos) funcionassem juntos. Octávio melhorou a legibilidade das saídas e Ítalo deixou comentários que ajudaram a entender pontos delicados.
+
+03/11
+Testes de ponta a ponta: rodamos todo o jogo do início ao fim em diferentes classes. Ajustamos mensagens, corrigimos validações de entrada e removemos um easter-egg que havia sobrado. Dia cansativo, mas muito produtivo — encontramos bugs sutis e os resolvemos.
+
+04/11
+Polimento final. Reforçamos as mensagens para que a saída seja mais informativa (ID dos itens, quantidades), preparei scripts de execução e encaminhei os últimos ajustes no fluxo de `Jogo.java`. Revisamos o relatório e alinhamos o que seria entregue.
+
+Observação
+Os últimos dois dias foram especialmente dedicados a testes e pequenas melhorias que aumentaram a clareza do código e a confiança no comportamento do jogo. Trabalhamos juntos, revisando o trabalho uns dos outros, e encerramos com sensação de dever cumprido.
