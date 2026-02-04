@@ -132,6 +132,10 @@ public class Inventario implements Cloneable {
         System.out.println("---------------------");
     }
 
+    public List<Item> getItens() {
+        return new ArrayList<>(this.itens);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;

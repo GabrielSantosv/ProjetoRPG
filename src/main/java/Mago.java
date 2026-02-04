@@ -1,6 +1,7 @@
 public class Mago extends Personagem {
     public Mago(String nome) {
         super(nome, 100, 25, 10, 1);
+        this.inventario.adicionarItem(new Item("Poção de Cura", "Restaura 30 HP.", 30, 1, TipoEfeito.CURA));
         this.inventario.adicionarItem(new Item("Elixir do Sábio", "Aumenta o ataque em 8.", 8, 1, TipoEfeito.AUMENTO_ATAQUE));
     }
 

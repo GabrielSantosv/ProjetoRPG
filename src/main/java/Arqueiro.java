@@ -1,6 +1,7 @@
 public class Arqueiro extends Personagem {
     public Arqueiro(String nome) {
         super(nome, 120, 22, 12, 1);
+        this.inventario.adicionarItem(new Item("Poção de Cura", "Restaura 30 HP.", 30, 1, TipoEfeito.CURA));
         this.inventario.adicionarItem(new Item("Elixir Olho de Águia", "Aumenta o ataque em 7.", 7, 1, TipoEfeito.AUMENTO_ATAQUE));
     }
 

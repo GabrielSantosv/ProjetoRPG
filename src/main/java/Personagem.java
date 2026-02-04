@@ -33,6 +33,7 @@ public abstract class Personagem implements Cloneable {
     public int getPontosVida() { return pontosVida; }
     public int getAtaque() { return ataque; }
     public int getDefesa() { return defesa; }
+    public int getNivel() { return nivel; }
     public Inventario getInventario() { return inventario; }
     public void setPontosVida(int pontosVida) { this.pontosVida = pontosVida; }
     public void setAtaque(int ataque) { this.ataque = ataque; }
@@ -79,10 +80,10 @@ public abstract class Personagem implements Cloneable {
     public int hashCode() {
         int ret = 666;
         ret = ret * 13 + this.nome.hashCode();
-        ret = ret * 13 + new Integer(this.pontosVida).hashCode();
-        ret = ret * 13 + new Integer(this.ataque).hashCode();
-        ret = ret * 13 + new Integer(this.defesa).hashCode();
-        ret = ret * 13 + new Integer(this.nivel).hashCode();
+        ret = ret * 13 + Integer.hashCode(this.pontosVida);
+        ret = ret * 13 + Integer.hashCode(this.ataque);
+        ret = ret * 13 + Integer.hashCode(this.defesa);
+        ret = ret * 13 + Integer.hashCode(this.nivel);
         ret = ret * 13 + this.inventario.hashCode();
         if (ret < 0) ret = -ret;
         return ret;

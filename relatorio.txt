@@ -1,49 +1,57 @@
 RELATÓRIO DO PROJETO RPG – VALE-CINZENTO
-Estrutura de Classes
-O projeto foi desenvolvido com base em uma hierarquia de herança bem definida.
-A classe abstrata Personagem concentra os atributos e comportamentos comuns (nome, HP, ataque, defesa e nível), servindo como base para as subclasses Guerreiro, Mago, Arqueiro e Inimigo, que especializam esses elementos conforme suas funções no jogo.
-Além das classes principais, foram utilizadas classes auxiliares para organização e suporte do sistema:
-– Item: representa objetos colecionáveis como poções, troféus e itens com efeitos especiais.
-– Inventario: gerencia os itens acumulados, controlando adições, remoções e quantidades.
-– TipoEfeito (enum): classifica os tipos de efeitos disponíveis, como cura e aumento de atributos.
-Recursos e Métodos Implementados
-Foram aplicados métodos-chave da linguagem Java para garantir uma experiência funcional e coesa:
-– toString(): fornece uma descrição legível dos objetos.
-– equals() e hashCode(): permitem comparar itens e utilizá-los corretamente em coleções.
-– clone(): realiza cópias profundas, evitando o compartilhamento de referências.
-– compareTo(): utilizado para ordenar o inventário de forma alfabética.
-O resultado final é um jogo funcional, com variações sutis de jogabilidade que tornam cada jornada única. O sistema de combate e progressão foi desenvolvido para ser fluido, com elementos de acaso que influenciam o desenrolar das batalhas. A narrativa do Vale-Cinzento adiciona imersão à experiência, incluindo um final secreto que premia jogadores atentos às decisões tomadas.
 
-Equipe e Atribuições (28/10 – 04/11)
-Alunos
-– Gabriel dos Santos — RA: 24013743
-– Ítalo de Souza — RA: 2400742
-– Octávio Nascimento — RA: 24015129
-Gabriel dos Santos — RA: 24013743
-– Desenvolvimento do arquivo Jogo.java, definindo o fluxo principal do jogo e pontos de integração.
-– Implementação do método turnoDeCombate(), responsável pela rolagem do dado (d6) e cálculo de dano:
-(DANO = (Ataque + d6) – Defesa).
-– Estruturação das etapas narrativas e progressão da história.
-– Criação de scripts e documentação de execução no repositório (README e instruções).
-– Responsável pela integração e merges finais entre os módulos.
-Ítalo de Souza — RA: 2400742
-– Criação do arquivo Item.java, incluindo os métodos equals(), hashCode(), compareTo() e clone().
-– Desenvolvimento do sistema de empilhamento de itens em Inventario.java, com métodos de adicionar, usar e remover.
-– Implementação da aplicação de efeitos do TipoEfeito (cura, aumento de ataque e defesa).
-– Construção de cópias profundas para Item e Inventario, evitando o compartilhamento de referências.
-– Responsável por ajustes visuais e mensagens exibidas ao jogador, além da documentação técnica e organização dos arquivos.
-Octávio Nascimento — RA: 24015129
-– Implementação da classe abstrata Personagem, definindo atributos, métodos e contratos de clonagem.
-– Criação das subclasses Guerreiro, Mago, Arqueiro e Inimigo, com estatísticas e comportamentos específicos.
-– Desenvolvimento da lógica de controle de combate e das opções do jogador.
-– Revisão e padronização de métodos como equals(), hashCode() e toString() para melhor legibilidade.
-– Responsável pela formatação final do relatório e revisão da documentação.
-Arquivos Complementares
-– StringNormalizer.java (geração de IDs) — Gabriel
-– TipoEfeito.java (enum de efeitos) — Ítalo
-– Documentação e resumo técnico (README e guias de estudo) — Ítalo e Octávio
+Integrantes
+• Guilherme Padilha Freire Alves - RA 24005138
+• João Pedro de Moura Bortoloti – RA 24020462
+• Gustavo de Assis Cavalheiro – RA 24003360
+• Otávio Augusto Mesquita Maldonado Moreno - RA 24007106
+• Henrique Aguiar de Souza Pella - RA 24013855
+• Felipe Marques Teles – RA 24021865
 
-Considerações Finais
-Acreditamos que nenhum integrante tenha se destacado mais que outros do grupo, portanto atribuímos a mesma nota a todos, 9,5 pelo projeto.
-Junto do ótimo desempenho, somos capaz de identificar diversas melhorias para versões futuras: permitir o uso do inventário fora das batalhas, ampliar as diferenças entre classes e aprimorar a narração para dar mais profundidade à história.
-Acreditamos que o trabalho entregou uma base sólida, equilibrando jogabilidade, narrativa e estrutura técnica, e que as futuras iterações podem transformar o Vale-Cinzento em uma experiência ainda mais completa, por isso acreditamos que ainda é possível entregar mais neste projeto, mesmo que tenhamos realizado os pedidos do projeto.
+Visão Geral do Projeto
+
+Este projeto consiste no desenvolvimento de um jogo de RPG em formato de texto, porém com uma interface gráfica interativa feita utilizando Java Swing. O jogo permite que o usuário crie seu personagem, enfrente inimigos, utilize itens e acompanhe sua evolução ao longo das batalhas. O Vale-Cinzento é um cenário imersivo que apresenta narrativas dinâmicas, um sistema de progressão com múltiplas etapas e um final secreto que recompensa decisões estratégicas do jogador.
+
+O sistema foi desenvolvido com base nos princípios da Programação Orientada a Objetos (POO), utilizando uma estrutura organizada em pacotes, separando bem a interface gráfica, as regras do jogo e as entidades envolvidas. Essa organização facilitou tanto o desenvolvimento quanto a manutenção do código.
+
+Estrutura Técnica do Projeto
+
+A arquitetura do projeto foi organizada em componentes bem definidos:
+
+• GUI (Interface Gráfica): Responsável por toda a parte visual do jogo, incluindo JogoGUI (janela principal com CardLayout), TelaSelecaoPersonagem (criação de personagem), TelaJogo (narrativa e ações), TelaBatalha (combate visual) e DialogoInventario (gerenciamento de itens).
+
+• Sistema de Jogo: Contém as regras principais, incluindo JogoLogica (orquestração central), GerenciadorHistoria (controle de narrativa e estados), SistemaBatalha (simulação de combate com cálculo de dano), StringNormalizer (normalização de dados) e TipoEfeito (enum de efeitos).
+
+• Personagens: Define as hierarquias de personagens através da classe abstrata Personagem, com especializações Guerreiro, Mago, Arqueiro para heróis e a classe Inimigo para adversários, cada uma com atributos e comportamentos específicos.
+
+• Itens e Inventário: Gerencia todo o sistema de itens do jogo (Item, Inventario, TipoEfeito), permitindo coleta, uso e efeitos que modificam os atributos do personagem durante o jogo.
+
+Estrutura de Classes e Métodos Implementados
+
+A classe abstrata Personagem concentra os atributos e comportamentos comuns (nome, vida, ataque, defesa e nível), servindo como base para as subclasses que especializam esses elementos conforme suas funções no jogo.
+
+Recursos-chave implementados em Java:
+
+• toString(): fornece descrição legível dos objetos.
+• equals() e hashCode(): permitem comparar itens e utilizá-los corretamente em coleções.
+• clone(): realiza cópias profundas, evitando compartilhamento de referências.
+• compareTo(): utilizado para ordenar o inventário de forma alfabética.
+
+O sistema de combate utiliza a fórmula de dano: DANO = (Ataque + d6) – (Defesa / 2), onde d6 é um número aleatório entre 1 e 10. A progressão ocorre através de três etapas narrativas principais (ETAPA 1, ETAPA 2 com batalha contra Brukkar, e conclusão), cada uma com escolhas que afetam o desenrolar da história.
+
+Contribuição dos Integrantes
+
+Gabriel dos Santos — RA: 24013743 – Arquitetura do Sistema e Integração (Backend)
+Desenvolvimento do arquivo Jogo.java, definindo o fluxo principal do jogo e pontos de integração. Implementação do método turnoDeCombate(), responsável pela rolagem do dado (d6) e cálculo de dano: (DANO = (Ataque + d6) – Defesa). Estruturação das etapas narrativas e progressão da história. Criação de scripts e documentação de execução no repositório (README e instruções). Responsável pela integração e merges finais entre os módulos.
+
+Ítalo de Souza — RA: 2400742 – Sistema de Itens e Inventário
+Criação do arquivo Item.java, incluindo os métodos equals(), hashCode(), compareTo() e clone(). Desenvolvimento do sistema de empilhamento de itens em Inventario.java, com métodos de adicionar, usar e remover. Implementação da aplicação de efeitos do TipoEfeito (cura, aumento de ataque e defesa). Construção de cópias profundas para Item e Inventario, evitando o compartilhamento de referências. Responsável por ajustes visuais e mensagens exibidas ao jogador, além da documentação técnica e organização dos arquivos.
+
+Octávio Nascimento — RA: 24015129 – Modelagem dos Personagens e Polimorfismo
+Implementação da classe abstrata Personagem, definindo atributos, métodos e contratos de clonagem. Criação das subclasses Guerreiro, Mago, Arqueiro e Inimigo, com estatísticas e comportamentos específicos. Desenvolvimento da lógica de controle de combate e das opções do jogador. Revisão e padronização de métodos como equals(), hashCode() e toString() para melhor legibilidade. Responsável pela formatação final do relatório e revisão da documentação.
+
+Conclusão
+
+O projeto resultou em um jogo de RPG funcional que aplica na prática diversos conceitos importantes da linguagem Java, como Herança, Polimorfismo, Interfaces e Tratamento de Exceções. O Vale-Cinzento demonstra uma arquitetura bem pensada, separando claramente a interface gráfica da lógica de jogo, e implementando um sistema narrativo dinâmico que oferece múltiplos caminhos e finais.
+
+O trabalho contribuiu significativamente para o aprendizado do grupo sobre desenvolvimento de jogos, organização de código, trabalho em equipe e design de interfaces. A estrutura implementada permite expansões futuras, como novos personagens, inimigos, itens e narrativas, mantendo a coesão e clareza do código.
